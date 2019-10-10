@@ -17,7 +17,7 @@ import withNamespace, {
   clearNamespace
 } from "../lib/persistence";
 
-import childrenHash from "../lib/childrenHash";
+const childrenHash = child => (child && child.props ? child.props.uid : null);
 
 const StoryContext = React.createContext();
 
@@ -156,7 +156,7 @@ const Story = ({ children, usePersistentState }) => {
                     });
                     clearNamespace(joinNamespace(namespace, "Chapter" + i));
                   }
-                  setCurrentChapter(chapterNum);
+                  setPlayedChapters(playedChapters.slice(0, chapterNum));
                 }}
               >
                 Restart from Here
@@ -165,7 +165,14 @@ const Story = ({ children, usePersistentState }) => {
           )}
         </React.Fragment>
       )),
-    [currentChapter, setCurrentChapter, children, namespace]
+    [
+      playedChapters,
+      setPlayedChapters,
+      currentChapter,
+      setCurrentChapter,
+      children,
+      namespace
+    ]
   );
 
   console.log("Story.render", {
